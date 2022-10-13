@@ -1,7 +1,6 @@
-# Lista de empresas [FRONT]
+## Empresas 2022 [front]
 
+**Como rodar**
 
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+ - No terminal executar `yarn install`
+ - Após instalar os pacotes executar `yarn dev`
