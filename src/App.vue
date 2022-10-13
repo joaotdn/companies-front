@@ -9,6 +9,9 @@
           :email="company.email"
         />
       </div>
+      <div class="row">
+        <button href="#" class="button" :disabled="currentPage > lastPage" @click="listCompanies">Carregar mais</button>
+      </div>
     </div> 
   </div>
 </template>
@@ -26,16 +29,37 @@ export default {
     Card
   },
   setup() {
-    let companies = ref();
+    let companies = ref([]);
+    let lastPage = ref();
+    let currentPage = ref(1);
+
+    const listCompanies = () => {
+      http.get('/companies', {
+        params: {
+          page: currentPage.value,
+          state: null,
+          city: null
+        }
+      })
+        .then(res => res.data)
+        .then(res => {
+          res.data.forEach((obj) => companies.value.push(obj));
+          lastPage.value  = res.meta.last_page;
+          if (currentPage.value <= lastPage.value) {
+            currentPage.value++;
+          }
+        });
+    };
 
     onMounted(() => {
-      http.get('/companies')
-        .then(res => res.data)
-        .then(res => companies.value = res.data);
+      listCompanies();
     });
 
     return {
-      companies
+      companies,
+      lastPage,
+      currentPage,
+      listCompanies
     }
   }
 }
@@ -59,6 +83,30 @@ export default {
     @media screen and (min-width: 741px) {
       width: 50%;
       float: left;
+    }
+  }
+
+  > .row {
+    padding: $gutter;
+    text-align: center;
+    width: 100%;
+    button {
+      border: none;
+      border-radius: 4px;
+      margin: 0;
+      padding: 1rem 0;
+      width: 200px;
+      background-color: $success;
+      color: $white;
+      font-size: 16px;
+      font-weight: 700;
+      display: inline-block;
+      cursor: pointer;
+      transition: background-color 0.3s linear;
+      &:hover {
+        background-color: darken($success, 5%);
+      }
+      &[disabled] {display: none;}
     }
   }
 }

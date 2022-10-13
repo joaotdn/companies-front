@@ -29,9 +29,9 @@
         a {
             font-size: 14px;
             font-weight: 700;
-        }
-        a:first-child {
-            margin-right: calc($gutter * 2);
+            &:first-child {
+                margin-right: calc($gutter * 2);
+            }
         }
     }
 }
